@@ -13,11 +13,11 @@ on:
 
 jobs:
   build:
-
-    runs-on: ${{matrix.os}}
-    strategy:
-     matrix:
-      os: [ubuntu-latest, windows-latest, macOs-latest]
+    runs-on: ubuntu-latest
+    #runs-on: ${{matrix.os}}
+    #strategy:
+     #matrix:
+      #os: [ubuntu-latest, windows-latest, macOs-latest]
 
     steps:
     - name: checkout step
@@ -33,3 +33,12 @@ jobs:
       
     - name: package with Maven
       run: mvn clean install
+      
+    - name: build and push to docker image
+      uses: mr-smithers-excellent/docker-build-push@v5
+      with:
+        image: sanjay7321/001-my-first-private-repository
+        registry: docker.io
+        username: ${{ secrets.DOCKER_HUB_USERNAME }}
+        password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+        
